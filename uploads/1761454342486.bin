@@ -1,0 +1,24 @@
+async function generateRandomHexName(length) {
+			return randomBytes(Math.ceil(length / 2)).toString('hex').slice(0, length);
+		};
+		case 'backup': {
+				if (!isCreator) return newReply(mess.owner);
+				if (isBot) return;
+				let sender = m.mentionedJid[0] || m.sender || slimecode.parseMention(args[0]) || (args[0].replace(/[@.+-]/g, '').replace(' ', '') + '@s.whatsapp.net') || '';
+				let date = new Date();
+				let filename = await generateRandomHexName(32);
+				const { execSync } = require('child_process');
+				const ls = (await execSync('ls')).toString().split('\n').filter((cek) => cek !== 'node_modules' && cek !== `${sessionName}` && cek !== 'package-lock.json' && cek !== 'yarn.lock' && cek !== '');
+				await newReply('Hasil backup akan dikirim lewat chat pribadi ya!');
+				await execSync(`zip -r ${filename}.zip ${ls.join(' ')}`);
+				
+				const sentMessage = await changli.sendMessage(sender, {
+					document: await fs.readFileSync(`./${filename}.zip`),
+					mimetype: 'application/zip',
+					fileName: `${filename}.zip`,
+					caption: 'Berhasil! Silakan download dan simpan file backup-nya ya.'
+				});
+				
+				await execSync(`rm -rf ${filename}.zip`);
+				console.log(`${filename}.zip telah dihapus dari file lokal.`);
+			}
