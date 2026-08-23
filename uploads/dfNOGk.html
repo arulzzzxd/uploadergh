@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Uploader - Standalone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+        body {
+            background-color: #050508;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .glow-border {
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.05);
+        }
+        .glow-border:hover {
+            border-color: rgba(56, 189, 248, 0.8);
+            box-shadow: 0 0 40px rgba(56, 189, 248, 0.15);
+        }
+        .file-drop-zone {
+            border: 2px dashed rgba(56, 189, 248, 0.2);
+            background: rgba(7, 8, 14, 0.6);
+            transition: all 0.3s ease;
+        }
+        .file-drop-zone.dragover {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.05);
+            transform: scale(1.01);
+        }
+        .file-drop-zone.dragover .upload-icon {
+            transform: scale(1.1) translateY(-4px);
+            color: #38bdf8;
+        }
+        .upload-icon {
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .file-item {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .toast {
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #38bdf8;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7dd3fc;
+        }
+        .shimmer {
+            background: linear-gradient(90deg, 
+                rgba(56, 189, 248, 0.05) 25%, 
+                rgba(56, 189, 248, 0.15) 50%, 
+                rgba(56, 189, 248, 0.05) 75%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .success-check {
+            animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .copy-flash {
+            animation: flashGreen 0.6s ease;
+        }
+        @keyframes flashGreen {
+            0%, 100% { background: transparent; }
+            50% { background: rgba(34, 197, 94, 0.2); border-color: #22c55e; }
+        }
+    </style>
+</head>
+<body class="text-zinc-300 min-h-screen flex flex-col items-center p-4 sm:p-6">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-6 right-6 z-50 max-w-sm w-full toast">
+        <div class="bg-[#0b0d16] border border-zinc-800 rounded-xl p-4 shadow-2xl flex items-start gap-3">
+            <div id="toastIcon" class="text-sky-400 mt-0.5">
+                <i class="fa-solid fa-circle-check text-lg"></i>
+            </div>
+            <div class="flex-1">
+                <p id="toastTitle" class="text-xs font-bold text-white uppercase tracking-wider">Success</p>
+                <p id="toastMessage" class="text-xs text-zinc-400 mt-0.5">File uploaded successfully</p>
+            </div>
+            <button onclick="hideToast()" class="text-zinc-600 hover:text-zinc-400 transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="w-full max-w-4xl bg-[#0b0d16] border border-zinc-800 rounded-xl px-6 py-4 flex items-center justify-between mb-6 shadow-lg">
+        <div class="flex items-center space-x-3">
+            <div class="bg-sky-900/40 text-sky-400 font-bold px-3 py-1.5 rounded-lg text-sm tracking-wide border border-sky-800/30">
+                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> UPLOAD
+            </div>
+            <span class="font-bold text-white tracking-wider text-sm">Arulz<span class="text-zinc-500 font-medium text-xs">Uploader</span></span>
+        </div>
+        <div class="flex items-center space-x-2">
+            <span class="hidden sm:inline-flex items-center gap-1.5 bg-emerald-950/30 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-md border border-emerald-800/30">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> ONLINE
+            </span>
+            <a href="#" onclick="window.location.reload()" class="bg-[#121522] border border-zinc-800 px-4 py-2 rounded-lg text-xs font-semibold text-zinc-400 hover:text-white transition flex items-center gap-1.5">
+                <i class="fa-solid fa-rotate-right text-[10px]"></i> Reset
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="w-full max-w-4xl bg-[#0b0d16] border border-zinc-800 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-8">
+        
+        <!-- Hero Section -->
+        <div class="space-y-4 max-w-2xl">
+            <div class="inline-flex items-center gap-1.5 bg-sky-950/40 border border-sky-900/40 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-sky-400">
+                <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span> File Uploader
+            </div>
+            
+            <h1 class="text-3xl font-extrabold text-white tracking-tight leading-tight">
+                <span class="text-sky-400">Upload</span> Files <br class="sm:hidden"> Free & Instant
+            </h1>
+            
+            <p class="text-xs sm:text-sm text-zinc-500 leading-relaxed">
+                Upload <strong class="text-zinc-300">1 file</strong> and get an instant public URL. Supports almost all formats — maximum <strong class="text-zinc-300">4.5MB</strong> per file. No login required.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-2 pt-2">
+                <span class="bg-[#0f1220] border border-emerald-950 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-md flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ONLINE
+                </span>
+                <span class="bg-[#0f1220] border border-zinc-800 text-zinc-400 text-[10px] font-bold px-2.5 py-1 rounded-md flex items-center gap-1.5">
+                    <i class="fa-solid fa-hard-drive text-[9px]"></i> 4.5MB MAX
+                </span>
+                <span class="bg-[#0f1220] border border-zinc-800 text-zinc-400 text-[10px] font-bold px-2.5 py-1 rounded-md flex items-center gap-1.5">
+                    <i class="fa-solid fa-key text-[9px]"></i> YES KEY
+                </span>
+                <span class="bg-[#0f1220] border border-zinc-800 text-zinc-400 text-[10px] font-bold px-2.5 py-1 rounded-md flex items-center gap-1.5">
+                    <i class="fa-regular fa-clock text-[9px]"></i> INSTANT
+                </span>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4 text-zinc-700 text-[10px] font-bold tracking-widest uppercase">
+            <span>//</span> <span>Upload File</span>
+            <div class="h-[1px] bg-zinc-900 flex-1"></div>
+        </div>
+
+        <!-- Upload Form -->
+        <form id="uploadForm" enctype="multipart/form-data" class="space-y-6">
+            
+            <div id="fileDropZone" class="file-drop-zone rounded-xl p-8 sm:p-12 text-center cursor-pointer transition group glow-border">
+                <input type="file" name="file" id="fileInput" class="hidden" accept="*/*" />
+                
+                <div class="upload-icon mx-auto w-16 h-16 mb-5 bg-sky-950/50 border border-sky-900/40 rounded-2xl flex items-center justify-center text-sky-400 group-hover:scale-105 transition">
+                    <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
+                </div>
+
+                <h3 class="text-sm font-bold text-zinc-200 tracking-wider mb-2 uppercase">Drag & Drop File Here</h3>
+                <p class="text-xs text-zinc-500 max-w-md mx-auto leading-relaxed">
+                    or <span class="text-zinc-300 font-semibold group-hover:text-sky-400">click to select file</span> · Max <span class="text-zinc-400">1 file</span> · Max <span class="text-zinc-400">4.5MB</span>
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-1.5 mt-6 max-w-xl mx-auto">
+                    <span class="bg-sky-950/40 border border-sky-800/50 text-[9px] font-bold text-sky-400 px-2 py-1 rounded flex items-center gap-1">
+                        <i class="fa-regular fa-image"></i> IMAGE
+                    </span>
+                    <span class="bg-[#0e1017] border border-zinc-800 text-[9px] font-bold text-zinc-500 px-2 py-1 rounded flex items-center gap-1">
+                        <i class="fa-regular fa-file-pdf"></i> PDF
+                    </span>
+                    <span class="bg-[#0e1017] border border-zinc-800 text-[9px] font-bold text-zinc-500 px-2 py-1 rounded flex items-center gap-1">
+                        <i class="fa-regular fa-file-word"></i> DOCX
+                    </span>
+                    <span class="bg-[#0e1017] border border-zinc-800 text-[9px] font-bold text-zinc-500 px-2 py-1 rounded flex items-center gap-1">
+                        <i class="fa-regular fa-file-excel"></i> XLSX
+                    </span>
+                    <span class="bg-[#0e1017] border border-zinc-800 text-[9px] font-bold text-zinc-500 px-2 py-1 rounded flex items-center gap-1">
+                        <i class="fa-regular fa-file-zipper"></i> ZIP
+                    </span>
+                    <span class="bg-[#0e1017] border border-zinc-800 text-[9px] font-bold text-zinc-500 px-2 py-1 rounded flex items-center gap-1">
+                        <i class="fa-regular fa-file-audio"></i> AUDIO
+                    </span>
+                    <span class="bg-[#0e1017] border border-zinc-800 text-[9px] font-bold text-zinc-500 px-2 py-1 rounded flex items-center gap-1">
+                        <i class="fa-regular fa-file-video"></i> VIDEO
+                    </span>
+                    <span class="bg-[#0e1017] border border-zinc-800 text-[9px] font-bold text-zinc-500 px-2 py-1 rounded flex items-center gap-1">
+                        <i class="fa-regular fa-file-lines"></i> TEXT
+                    </span>
+                </div>
+            </div>
+
+            <!-- File Preview -->
+            <div id="previewArea" class="hidden">
+                <div class="bg-[#07080e] border border-zinc-800 rounded-xl p-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
+                            <i class="fa-regular fa-file mr-1.5"></i> Selected File
+                        </span>
+                        <button type="button" id="removeFileBtn" class="text-xs text-red-400 hover:text-red-300 font-medium transition flex items-center gap-1">
+                            <i class="fa-regular fa-trash-can"></i> Remove
+                        </button>
+                    </div>
+                    
+                    <div id="fileList" class="space-y-2"></div>
+                    
+                    <div id="fileDetails" class="hidden grid grid-cols-2 sm:grid-cols-3 gap-2 text-[10px] text-zinc-500 bg-black/30 rounded-lg p-3">
+                        <div>
+                            <span class="block text-zinc-600 uppercase tracking-wider text-[9px]">Size</span>
+                            <span id="fileSize" class="text-zinc-300 font-mono">0 MB</span>
+                        </div>
+                        <div>
+                            <span class="block text-zinc-600 uppercase tracking-wider text-[9px]">Type</span>
+                            <span id="fileType" class="text-zinc-300">-</span>
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
+                            <span class="block text-zinc-600 uppercase tracking-wider text-[9px]">Name</span>
+                            <span id="fileName" class="text-zinc-300 truncate block">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Progress -->
+            <div id="progressArea" class="hidden">
+                <div class="bg-[#07080e] border border-zinc-800 rounded-xl p-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
+                            <i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Uploading...
+                        </span>
+                        <span id="progressPercent" class="text-xs font-bold text-sky-400">0%</span>
+                    </div>
+                    <div class="w-full bg-zinc-900 rounded-full h-2 overflow-hidden">
+                        <div id="progressBar" class="bg-gradient-to-r from-sky-600 to-sky-400 h-full rounded-full transition-all duration-300 w-0"></div>
+                    </div>
+                    <p id="progressStatus" class="text-[10px] text-zinc-500 text-center">Preparing upload...</p>
+                </div>
+            </div>
+
+            <!-- Upload Button -->
+            <button type="submit" id="uploadBtn" class="w-full py-3.5 bg-gradient-to-r from-sky-600 to-sky-500 hover:from-sky-500 hover:to-sky-400 text-black font-bold rounded-xl transition shadow-lg shadow-sky-950/20 text-sm tracking-wider uppercase flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:from-sky-600 disabled:hover:to-sky-500">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span id="uploadBtnText">Start Upload</span>
+            </button>
+        </form>
+
+        <!-- Result Area -->
+        <div id="resultArea" class="hidden">
+            <div class="bg-[#07080e] border border-emerald-800/30 rounded-xl p-4 sm:p-6 space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="success-check w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-lg">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white">Upload Successful!</h4>
+                        <p class="text-xs text-zinc-400">Your file has been uploaded to the server.</p>
+                    </div>
+                </div>
+
+                <div class="bg-black/40 border border-zinc-800 rounded-xl p-3 sm:p-4">
+                    <div class="flex items-center justify-between gap-2 flex-wrap">
+                        <div class="flex-1 min-w-0">
+                            <span class="text-[10px] text-zinc-500 uppercase tracking-wider block mb-0.5">Public URL</span>
+                            <code id="resultUrl" class="text-xs text-sky-400 font-mono break-all select-all"></code>
+                        </div>
+                        <button onclick="copyResultUrl()" class="flex-shrink-0 px-3 py-1.5 bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 text-sky-400 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+                            <i class="fa-regular fa-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="resetUploader()" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold py-2 rounded-lg text-xs transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-plus"></i> Upload Again
+                    </button>
+                    <a id="resultLink" href="#" target="_blank" class="flex-1 bg-sky-500 hover:bg-sky-400 text-black font-bold py-2 rounded-lg text-xs transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Open URL
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="bg-[#07080e] border border-zinc-900 rounded-xl p-4 flex items-start gap-3">
+            <i class="fa-solid fa-circle-info text-sky-500 text-xs mt-0.5"></i>
+            <p class="text-xs text-zinc-500 leading-normal">
+                Files are stored publicly. Maximum 4.5MB per file. Supported formats: images, video, audio, documents, and ZIP archives.
+                <span class="block mt-1 text-zinc-600">API Key required for upload access.</span>
+            </p>
+        </footer>
+    </main>
+
+    <footer class="w-full max-w-4xl mt-8 text-center text-[10px] text-zinc-600 border-t border-zinc-900/50 pt-6">
+        <p>© 2026 Arulz-XD Uploader · All rights reserved · <span class="text-zinc-500">v1.0.0</span></p>
+    </footer>
+
+    <script>
+        const MAX_FILE_SIZE = 4.5 * 1024 * 1024;
+        const API_BASE_URL = window.location.origin || 'https://haseebuploader.vercel.app';
+
+        const fileDropZone = document.getElementById('fileDropZone');
+        const fileInput = document.getElementById('fileInput');
+        const previewArea = document.getElementById('previewArea');
+        const fileList = document.getElementById('fileList');
+        const fileDetails = document.getElementById('fileDetails');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const fileType = document.getElementById('fileType');
+        const removeFileBtn = document.getElementById('removeFileBtn');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const uploadBtnText = document.getElementById('uploadBtnText');
+        const progressArea = document.getElementById('progressArea');
+        const progressBar = document.getElementById('progressBar');
+        const progressPercent = document.getElementById('progressPercent');
+        const progressStatus = document.getElementById('progressStatus');
+        const resultArea = document.getElementById('resultArea');
+        const resultUrl = document.getElementById('resultUrl');
+        const resultLink = document.getElementById('resultLink');
+        const toast = document.getElementById('toast');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastMessage = document.getElementById('toastMessage');
+        const toastIcon = document.getElementById('toastIcon');
+
+        let selectedFile = null;
+        let isUploading = false;
+
+        function handleFile(file) {
+            if (file.size > MAX_FILE_SIZE) {
+                showToast('error', 'File Too Large', 
+                    `Maximum ${(MAX_FILE_SIZE / 1024 / 1024).toFixed(1)}MB. Your file is ${(file.size / 1024 / 1024).toFixed(2)}MB.`);
+                return false;
+            }
+
+            selectedFile = file;
+            displayFilePreview(file);
+            return true;
+        }
+
+        function displayFilePreview(file) {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item flex items-center gap-3 text-zinc-400 py-1.5 px-2 bg-zinc-900/30 rounded-lg';
+            
+            let icon = 'fa-regular fa-file';
+            const ext = file.name.split('.').pop().toLowerCase();
+            const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico'];
+            const videoExts = ['mp4', 'webm', 'mov', 'avi', 'mkv', 'flv', 'wmv'];
+            const audioExts = ['mp3', 'wav', 'ogg', 'flac', 'm4a', 'aac'];
+            const docExts = ['pdf', 'doc', 'docx', 'txt', 'md', 'rtf'];
+            const spreadsheetExts = ['xls', 'xlsx', 'csv'];
+            const presentationExts = ['ppt', 'pptx'];
+            const archiveExts = ['zip', 'rar', '7z', 'tar', 'gz'];
+
+            if (imageExts.includes(ext)) icon = 'fa-regular fa-image';
+            else if (videoExts.includes(ext)) icon = 'fa-regular fa-file-video';
+            else if (audioExts.includes(ext)) icon = 'fa-regular fa-file-audio';
+            else if (docExts.includes(ext)) icon = 'fa-regular fa-file-lines';
+            else if (spreadsheetExts.includes(ext)) icon = 'fa-regular fa-file-excel';
+            else if (presentationExts.includes(ext)) icon = 'fa-regular fa-file-powerpoint';
+            else if (archiveExts.includes(ext)) icon = 'fa-regular fa-file-zipper';
+            else if (ext === 'pdf') icon = 'fa-regular fa-file-pdf';
+
+            fileItem.innerHTML = `
+                <i class="${icon} text-sky-400 text-sm"></i>
+                <span class="truncate flex-1 text-xs font-medium text-zinc-300">${file.name}</span>
+                <span class="text-[10px] text-zinc-500">(${(file.size / 1024).toFixed(1)} KB)</span>
+            `;
+            
+            fileList.innerHTML = '';
+            fileList.appendChild(fileItem);
+
+            fileName.textContent = file.name;
+            fileSize.textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+            fileType.textContent = file.type || ext.toUpperCase() || 'Unknown';
+            fileDetails.classList.remove('hidden');
+
+            previewArea.classList.remove('hidden');
+            fileDropZone.classList.add('border-sky-400/50');
+        }
+
+        function clearFile() {
+            selectedFile = null;
+            fileInput.value = '';
+            previewArea.classList.add('hidden');
+            fileDetails.classList.add('hidden');
+            fileList.innerHTML = '';
+            fileDropZone.classList.remove('border-sky-400/50');
+            resultArea.classList.add('hidden');
+            progressArea.classList.add('hidden');
+            progressBar.style.width = '0%';
+            progressPercent.textContent = '0%';
+        }
+
+        async function uploadFile(file) {
+            if (!file) return;
+            if (isUploading) return;
+
+            isUploading = true;
+            uploadBtn.disabled = true;
+            uploadBtnText.textContent = 'Uploading...';
+
+            progressArea.classList.remove('hidden');
+            progressBar.style.width = '0%';
+            progressPercent.textContent = '0%';
+            progressStatus.textContent = 'Preparing upload...';
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('/uploadfile', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.message || 'Upload failed');
+                }
+
+                if (result.status && result.url) {
+                    progressBar.style.width = '100%';
+                    progressPercent.textContent = '100%';
+                    progressStatus.textContent = 'Upload complete! ✅';
+                    
+                    setTimeout(() => {
+                        showResult(result.url);
+                    }, 300);
+                } else {
+                    throw new Error(result.message || 'Upload failed');
+                }
+
+            } catch (error) {
+                console.error('Upload error:', error);
+                showToast('error', 'Upload Failed', error.message || 'An error occurred while uploading.');
+                progressStatus.textContent = '❌ Upload failed';
+                progressBar.style.width = '0%';
+                progressPercent.textContent = '0%';
+            } finally {
+                isUploading = false;
+                uploadBtn.disabled = false;
+                uploadBtnText.textContent = 'Start Upload';
+            }
+        }
+
+        function showResult(url) {
+            resultArea.classList.remove('hidden');
+            resultUrl.textContent = url;
+            resultLink.href = url;
+            
+            resultArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            showToast('success', 'Upload Successful!', 'File uploaded to server.');
+        }
+
+        function copyResultUrl() {
+            const url = resultUrl.textContent;
+            if (!url) return;
+            
+            navigator.clipboard.writeText(url).then(() => {
+                const btn = document.querySelector('#resultArea button');
+                btn.classList.add('copy-flash');
+                setTimeout(() => btn.classList.remove('copy-flash'), 600);
+                showToast('success', 'Copied!', 'URL copied to clipboard.');
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = url;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast('success', 'Copied!', 'URL copied to clipboard.');
+            });
+        }
+
+        function resetUploader() {
+            clearFile();
+            resultArea.classList.add('hidden');
+            progressArea.classList.add('hidden');
+            progressBar.style.width = '0%';
+            progressPercent.textContent = '0%';
+            fileDropZone.classList.remove('border-sky-400/50');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        let toastTimeout = null;
+
+        function showToast(type, title, message) {
+            const icons = {
+                success: 'fa-regular fa-circle-check',
+                error: 'fa-regular fa-circle-xmark',
+                warning: 'fa-regular fa-triangle-exclamation',
+                info: 'fa-regular fa-circle-info'
+            };
+
+            const colors = {
+                success: 'text-emerald-400',
+                error: 'text-red-400',
+                warning: 'text-amber-400',
+                info: 'text-sky-400'
+            };
+
+            toastIcon.className = icons[type] || icons.info + ' text-lg ' + (colors[type] || colors.info);
+            toastTitle.textContent = title || 'Notification';
+            toastMessage.textContent = message || '';
+
+            toast.classList.add('show');
+            
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(hideToast, 5000);
+        }
+
+        function hideToast() {
+            toast.classList.remove('show');
+            if (toastTimeout) {
+                clearTimeout(toastTimeout);
+                toastTimeout = null;
+            }
+        }
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        removeFileBtn.addEventListener('click', clearFile);
+
+        document.getElementById('uploadForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (selectedFile) {
+                uploadFile(selectedFile);
+            } else {
+                showToast('warning', 'No File', 'Please select a file first.');
+                fileDropZone.classList.add('border-red-500/50');
+                setTimeout(() => fileDropZone.classList.remove('border-red-500/50'), 2000);
+            }
+        });
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            fileDropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            fileDropZone.addEventListener(eventName, () => {
+                fileDropZone.classList.add('dragover');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            fileDropZone.addEventListener(eventName, () => {
+                fileDropZone.classList.remove('dragover');
+            });
+        });
+
+        fileDropZone.addEventListener('drop', (e) => {
+            const files = e.dataTransfer.files;
+            if (files.length) {
+                const file = files[0];
+                if (handleFile(file)) {
+                    const dt = new DataTransfer();
+                    dt.items.add(file);
+                    fileInput.files = dt.files;
+                }
+            }
+        });
+
+        fileDropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+                e.preventDefault();
+                fileInput.click();
+            }
+            if (e.key === 'Escape') {
+                hideToast();
+            }
+            if ((e.ctrlKey || e.metaKey) && e.key === 'c' && !resultArea.classList.contains('hidden')) {
+                copyResultUrl();
+            }
+        });
+
+        console.log('Arulz-XD Uploader Standalone v1.0.0');
+        console.log(`Max file size: ${(MAX_FILE_SIZE / 1024 / 1024).toFixed(1)}MB`);
+        console.log(`API Base URL: ${API_BASE_URL}`);
+
+        toast.addEventListener('click', hideToast);
+    </script>
+</body>
+</html>
