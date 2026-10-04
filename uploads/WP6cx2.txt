@@ -1,0 +1,514 @@
+-- Obfuscate by Xyurei Obfuscator
+-- This script has been obfuscated
+local _jc9jpwp = string.rep("x", 45)
+local _j949kd1 = {776, 599, 250}
+local _j0hqmwg = function() return 5872 end
+local _xzw6ud2g = game:GetService("\x50\x6c\x61\x79\x65\x72\x73")
+local _lrex06ud = game:GetService("\x55\x73\x65\x72\x49\x6e\x70\x75\x74\x53\x65\x72\x76\x69\x63\x65")
+local _tm0ak5an = game:GetService("\x54\x77\x65\x65\x6e\x53\x65\x72\x76\x69\x63\x65")
+local _oof50d9y = game:GetService("\x57\x6f\x72\x6b\x73\x70\x61\x63\x65")
+local _oi4e6s3o = _xzw6ud2g.LocalPlayer
+local _1kqcqgl3 = loadstring(game:HttpGet("\x68\x74\x74\x70\x73\x3a\x2f\x2f\x73\x69\x72\x69\x75\x73\x2e\x6d\x65\x6e\x75\x2f\x67\x65\x6e\x32"))()
+local _217ojvh8 = 2
+local _bz3v83bx = 1
+local _a89v4r8f = 1
+local _x7wv36ui = 1
+local _z3q8wgan = 1
+local _u9640t73 = 1
+local _wyp36kec = 5
+local _r48usys6 = false
+local _2r66lugo = false
+local _y8xwg968 = true
+local _8i9312rs = CFrame.new(34.0499878, -0.4796893, 6135.2002, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+local _65nr6njh = CFrame.new(33.5230179, -7.97965002, 10005.1328, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+local _5tj4iyuy = CFrame.new(0, 10, 0)
+local _uf2ya7dx   = CFrame.new(35.0000076, 0.520349801, 295.302399, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+local _xy8fdhb7       = CFrame.new(31.6785355, -0.4796893, 516.226074, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+local _qvlwwc8t       = CFrame.new(31.8499947, -0.4796893, 824.543701, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+local _ada6n766  = CFrame.new(33.5999985, -0.4796893, 1253.24146, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+local _1tvah9di   = CFrame.new(31.3249931, -0.4796893, 1821.65002, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+local _0ye6xdbs     = CFrame.new(32.1749802, -0.4796893, 2554.92554, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+local _6iv6qnae  = CFrame.new(35.0499878, -0.4796893, 4051.85962, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+local _s21mljtf = CFrame.new(34.0499878, -0.4796893, 6135.2002, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+local _q7lfqu8t    = CFrame.new(32.549984, -0.4796893, 10007.4473, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+local _a3kmouxk = false
+local _lr0y93a0 = 0
+local _1ei4l6oj = 0
+local _2fblqrh0 = nil
+local function teleportTo(cframe)
+local _clra4dth = _oi4e6s3o.Character
+if _clra4dth and _clra4dth:FindFirstChild("\x48\x75\x6d\x61\x6e\x6f\x69\x64\x52\x6f\x6f\x74\x50\x61\x72\x74") then
+_clra4dth.HumanoidRootPart.CFrame = cframe
+end
+end
+local function getTotalSelectedFloors()
+local _c1pjjs8q = 1
+if _r48usys6 then _c1pjjs8q += 1 end
+if _2r66lugo then _c1pjjs8q += 1 end
+return _c1pjjs8q
+end
+local function teleport(cframe)
+local _clra4dth = _oi4e6s3o.Character or _oi4e6s3o.CharacterAdded:Wait()
+local _vqrktf83 = _clra4dth:WaitForChild("\x48\x75\x6d\x61\x6e\x6f\x69\x64\x52\x6f\x6f\x74\x50\x61\x72\x74")
+_vqrktf83.CFrame = cframe
+end
+local function getPlayerPlot()
+local _066rsbrs = _oof50d9y:WaitForChild("\x50\x6c\x6f\x74\x73")
+local _6y8ny4jb = _066rsbrs:WaitForChild("\x50\x6c\x6f\x74\x5f" .. _oi4e6s3o.Name)
+return _6y8ny4jb
+end
+local function teleportToPlayerPlot()
+local _6y8ny4jb = getPlayerPlot()
+if _6y8ny4jb:IsA("\x4d\x6f\x64\x65\x6c") then
+local _s9egyjn0 = _6y8ny4jb:GetPivot()
+teleport(_s9egyjn0 + Vector3.new(0, 3, 0))
+return true
+end
+local _xvh0qu2h = _6y8ny4jb:FindFirstChildWhichIsA("\x42\x61\x73\x65\x50\x61\x72\x74", true)
+if not _xvh0qu2h then return false end
+teleport(_xvh0qu2h.CFrame + Vector3.new(0, 3, 0))
+return true
+end
+local function getCollectTouch(floorNumber, slotNumber)
+local _6y8ny4jb = getPlayerPlot()
+local _b7kklshq = _6y8ny4jb:WaitForChild("\x46\x6c\x6f\x6f\x72" .. floorNumber)
+local _doxfi1m3 = _b7kklshq:WaitForChild("\x53\x6c\x6f\x74\x73")
+local _y9bjybg4 = _doxfi1m3:WaitForChild("\x53\x6c\x6f\x74" .. slotNumber)
+local _zvnoc6r2 = _y9bjybg4:WaitForChild("\x43\x6f\x6c\x6c\x65\x63\x74\x54\x6f\x75\x63\x68")
+return _zvnoc6r2
+end
+local function teleportToCollectTouch(floorNumber, slotNumber)
+local _zvnoc6r2 = getCollectTouch(floorNumber, slotNumber)
+if not _zvnoc6r2:IsA("\x42\x61\x73\x65\x50\x61\x72\x74") then return false end
+local _clra4dth = _oi4e6s3o.Character or _oi4e6s3o.CharacterAdded:Wait()
+local _vqrktf83 = _clra4dth:WaitForChild("\x48\x75\x6d\x61\x6e\x6f\x69\x64\x52\x6f\x6f\x74\x50\x61\x72\x74")
+local _dbm5j4tt = _zvnoc6r2.Position.Y + (_zvnoc6r2.Size.Y / 2)
+local _7nb0jhi8 = Vector3.new(
+_zvnoc6r2.Position.X,
+_dbm5j4tt + _wyp36kec,
+_zvnoc6r2.Position.Z
+)
+_vqrktf83.CFrame = CFrame.new(_7nb0jhi8)
+return true
+end
+local function getCosmicEntities()
+local _vhqqd7e0 = {}
+local _htbuyu1h = _oof50d9y:FindFirstChild("\x49\x74\x65\x6d\x53\x70\x61\x77\x6e\x65\x72\x73")
+if not _htbuyu1h then return _vhqqd7e0 end
+local _kfv52lqb = _htbuyu1h:FindFirstChild("\x43\x6f\x73\x6d\x69\x63")
+if not _kfv52lqb then return _vhqqd7e0 end
+for _, object in ipairs(_kfv52lqb:GetChildren()) do
+if object:IsA("\x4d\x6f\x64\x65\x6c") or object:IsA("\x46\x6f\x6c\x64\x65\x72") then
+table.insert(_vhqqd7e0, object)
+end
+end
+return _vhqqd7e0
+end
+local function getEntityPosition(_yt8e9iea)
+if _yt8e9iea:IsA("\x4d\x6f\x64\x65\x6c") then
+if _yt8e9iea.PrimaryPart then
+return _yt8e9iea.PrimaryPart.Position
+end
+local _vqrktf83 = _yt8e9iea:FindFirstChild("\x48\x75\x6d\x61\x6e\x6f\x69\x64\x52\x6f\x6f\x74\x50\x61\x72\x74")
+if _vqrktf83 and _vqrktf83:IsA("\x42\x61\x73\x65\x50\x61\x72\x74") then
+return _vqrktf83.Position
+end
+end
+local _xvh0qu2h = _yt8e9iea:FindFirstChildWhichIsA("\x42\x61\x73\x65\x50\x61\x72\x74", true)
+if _xvh0qu2h then
+return _xvh0qu2h.Position
+end
+return nil
+end
+local function getPrompt(_yt8e9iea)
+return _yt8e9iea:FindFirstChildWhichIsA("\x50\x72\x6f\x78\x69\x6d\x69\x74\x79\x50\x72\x6f\x6d\x70\x74", true)
+end
+local function getEnabledFloors()
+local _co77s746 = { 1 }
+if _r48usys6 then table.insert(_co77s746, 2) end
+if _2r66lugo then table.insert(_co77s746, 3) end
+return _co77s746
+end
+local function getTotalRouteCount()
+local _h1m7oie9 = 10
+if _r48usys6 then _h1m7oie9 += 10 end
+if _2r66lugo then _h1m7oie9 += 10 end
+return _h1m7oie9
+end
+local _fgh2vjbx, ActionText, CycleStat, RouteStat, TimeStat, FloorStat
+local function collectRandomCosmic()
+local _vhqqd7e0 = getCosmicEntities()
+if #_vhqqd7e0 == 0 then
+if _fgh2vjbx then _fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64") end
+if ActionText then ActionText:Set("\x4e\x6f\x20\x43\x6f\x73\x6d\x69\x63\x20\x65\x6e\x74\x69\x74\x69\x65\x73\x20\x66\x6f\x75\x6e\x64\x2e") end
+return false
+end
+local _yt8e9iea = _vhqqd7e0[math.random(1, #_vhqqd7e0)]
+local _cd7jjaoa = getEntityPosition(_yt8e9iea)
+if not _cd7jjaoa then
+if _fgh2vjbx then _fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64") end
+if ActionText then ActionText:Set("\x43\x6f\x73\x6d\x69\x63\x20\x68\x61\x73\x20\x6e\x6f\x20\x76\x61\x6c\x69\x64\x20\x70\x6f\x73\x69\x74\x69\x6f\x6e\x2e") end
+return false
+end
+if ActionText then ActionText:Set("\x54\x65\x6c\x65\x70\x6f\x72\x74\x69\x6e\x67\x20\x74\x6f\x20\x72\x61\x6e\x64\x6f\x6d\x20\x43\x6f\x73\x6d\x69\x63\x2e\x2e\x2e") end
+teleport(CFrame.new(_cd7jjaoa + Vector3.new(0, 3, 0)))
+task.wait(_bz3v83bx)
+if not _a3kmouxk then return false end
+local _f0jevofj = getPrompt(_yt8e9iea)
+if not _f0jevofj then
+if _fgh2vjbx then _fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64") end
+if ActionText then ActionText:Set("\x4e\x6f\x20\x50\x72\x6f\x78\x69\x6d\x69\x74\x79\x50\x72\x6f\x6d\x70\x74\x20\x66\x6f\x75\x6e\x64\x2e") end
+return false
+end
+if ActionText then ActionText:Set("\x43\x6f\x6c\x6c\x65\x63\x74\x69\x6e\x67\x20\x43\x6f\x73\x6d\x69\x63\x2e\x2e\x2e") end
+_f0jevofj:InputHoldBegin()
+task.wait(_f0jevofj.HoldDuration)
+_f0jevofj:InputHoldEnd()
+if not _a3kmouxk then return false end
+if ActionText then ActionText:Set("\x43\x6f\x73\x6d\x69\x63\x20\x63\x6f\x6c\x6c\x65\x63\x74\x65\x64\x2e") end
+task.wait(_a89v4r8f)
+return true
+end
+local function performGodCheck()
+if not _a3kmouxk or not _y8xwg968 then return end
+teleportTo(_65nr6njh)
+task.wait(1)
+if not _a3kmouxk or not _y8xwg968 then return end
+local _htbuyu1h = _oof50d9y:FindFirstChild("\x49\x74\x65\x6d\x53\x70\x61\x77\x6e\x65\x72\x73")
+if _htbuyu1h then
+local _9id4xyob = _htbuyu1h:FindFirstChild("\x47\x6f\x64")
+if _9id4xyob then
+local _j9bdysgv = _9id4xyob:GetChildren()[1]
+if _j9bdysgv then
+if _j9bdysgv:IsA("\x42\x61\x73\x65\x50\x61\x72\x74") then
+teleportTo(_j9bdysgv.CFrame)
+elseif _j9bdysgv:IsA("\x4d\x6f\x64\x65\x6c") and _j9bdysgv.PrimaryPart then
+teleportTo(_j9bdysgv.PrimaryPart.CFrame)
+end
+task.wait(0.2)
+local _f0jevofj = _j9bdysgv:FindFirstChildWhichIsA("\x50\x72\x6f\x78\x69\x6d\x69\x74\x79\x50\x72\x6f\x6d\x70\x74", true)
+if _f0jevofj then
+fireproximityprompt(_f0jevofj)
+end
+end
+end
+end
+task.wait(1)
+teleportTo(_5tj4iyuy)
+end
+task.spawn(function()
+while true do
+task.wait(60)
+if _a3kmouxk and _y8xwg968 then
+performGodCheck()
+end
+end
+end)
+local _smo7d3a1 = _1kqcqgl3:CreateWindow({
+name = "\x58\x59\x55\x52\x45\x49\x20\x58\x2d\x46\x4c\x4f\x49\x44",
+subtitle = "\x76\x30\x69\x64\x68\x75\x62\x20\x7c\x20\x47\x65\x6e\x32\x20\x45\x64\x69\x74\x69\x6f\x6e",
+sidebarLayout = true,
+theme = "\x64\x65\x66\x61\x75\x6c\x74",
+icon = "\x72\x62\x78\x61\x73\x73\x65\x74\x69\x64\x3a\x2f\x2f\x31\x30\x30\x32\x38\x34\x39\x34\x34\x38\x30\x31\x33\x38\x33",
+configuration = {
+autoSave = false,
+autoLoad = false,
+fileName = "\x76\x30\x69\x64\x68\x75\x62",
+customFolder = "\x76\x30\x69\x64\x68\x75\x62",
+},
+})
+local _4o7fy6gk = _smo7d3a1:CreateTab({ name = "\x4d\x61\x69\x6e", icon = 93364949241311 })
+local _nq2ta5dp = _smo7d3a1:CreateTab({ name = "\x54\x65\x6c\x65\x70\x6f\x72\x74\x73", icon = 93364949241311 })
+local _ul0515bt = _smo7d3a1:CreateTab({ name = "\x53\x65\x74\x74\x69\x6e\x67\x73", icon = 93364949241311 })
+_4o7fy6gk:CreateSection({ name = "\x53\x74\x61\x74\x75\x73" })
+_fgh2vjbx = _4o7fy6gk:CreateText({
+name = "\x53\x74\x61\x74\x75\x73",
+text = "\x53\x74\x6f\x70\x70\x65\x64",
+})
+ActionText = _4o7fy6gk:CreateText({
+name = "\x41\x63\x74\x69\x6f\x6e",
+text = "\x57\x61\x69\x74\x69\x6e\x67\x20\x74\x6f\x20\x73\x74\x61\x72\x74\x2e\x2e\x2e",
+})
+CycleStat = _4o7fy6gk:CreateStat({ name = "\x43\x79\x63\x6c\x65", value = 0 })
+RouteStat = _4o7fy6gk:CreateStat({ name = "\x52\x6f\x75\x74\x65", value = 0 })
+TimeStat = _4o7fy6gk:CreateStat({ name = "\x54\x69\x6d\x65\x20\x28\x73\x65\x63\x6f\x6e\x64\x73\x29", value = 0 })
+FloorStat = _4o7fy6gk:CreateStat({ name = "\x46\x6c\x6f\x6f\x72", value = 1 })
+_4o7fy6gk:CreateSection({ name = "\x43\x6f\x6e\x66\x69\x67\x75\x72\x61\x74\x69\x6f\x6e\x73" })
+_4o7fy6gk:CreateToggle({
+name = "\x46\x6c\x6f\x6f\x72\x20\x32",
+value = false,
+callback = function(v)
+if _a3kmouxk then
+_smo7d3a1:Notify({ title = "\x57\x61\x72\x6e\x69\x6e\x67", content = "\x43\x61\x6e\x6e\x6f\x74\x20\x63\x68\x61\x6e\x67\x65\x20\x77\x68\x69\x6c\x65\x20\x72\x75\x6e\x6e\x69\x6e\x67\x2e" })
+return
+end
+_r48usys6 = v
+end,
+})
+_4o7fy6gk:CreateToggle({
+name = "\x46\x6c\x6f\x6f\x72\x20\x33",
+value = false,
+callback = function(v)
+if _a3kmouxk then
+_smo7d3a1:Notify({ title = "\x57\x61\x72\x6e\x69\x6e\x67", content = "\x43\x61\x6e\x6e\x6f\x74\x20\x63\x68\x61\x6e\x67\x65\x20\x77\x68\x69\x6c\x65\x20\x72\x75\x6e\x6e\x69\x6e\x67\x2e" })
+return
+end
+_2r66lugo = v
+end,
+})
+_4o7fy6gk:CreateToggle({
+name = "\x47\x6f\x64\x20\x43\x68\x65\x63\x6b",
+value = true,
+callback = function(v)
+_y8xwg968 = v
+end,
+})
+_4o7fy6gk:CreateSection({ name = "\x43\x6f\x6e\x74\x72\x6f\x6c\x73" })
+_4o7fy6gk:CreateButton({
+name = "\x53\x54\x41\x52\x54",
+callback = function()
+if _a3kmouxk then
+_smo7d3a1:Notify({ title = "\x49\x6e\x66\x6f", content = "\x41\x6c\x72\x65\x61\x64\x79\x20\x72\x75\x6e\x6e\x69\x6e\x67\x2e" })
+return
+end
+_a3kmouxk = true
+_1ei4l6oj = os.time()
+task.spawn(function()
+while _a3kmouxk do
+if not _a3kmouxk then break end
+local _9fetyubi = os.time() - _1ei4l6oj
+pcall(function() TimeStat:Set(_9fetyubi) end)
+task.wait(1)
+end
+end)
+task.spawn(function()
+while _a3kmouxk do
+_lr0y93a0 += 1
+pcall(function() CycleStat:Set(_lr0y93a0) end)
+_fgh2vjbx:Set("\x52\x75\x6e\x6e\x69\x6e\x67")
+ActionText:Set("\x54\x65\x6c\x65\x70\x6f\x72\x74\x69\x6e\x67\x20\x74\x6f\x20\x43\x6f\x73\x6d\x69\x63\x2e\x2e\x2e")
+teleportTo(_8i9312rs)
+if not _a3kmouxk then break end
+ActionText:Set("\x57\x61\x69\x74\x69\x6e\x67\x20\x61\x74\x20\x43\x6f\x73\x6d\x69\x63\x2e\x2e\x2e")
+task.wait(_217ojvh8)
+if not _a3kmouxk then break end
+local _36t1iy3p = collectRandomCosmic()
+if not _a3kmouxk or not _36t1iy3p then
+_a3kmouxk = false
+break
+end
+ActionText:Set("\x54\x65\x6c\x65\x70\x6f\x72\x74\x69\x6e\x67\x20\x74\x6f\x20\x50\x6c\x61\x79\x65\x72\x20\x50\x6c\x6f\x74\x2e\x2e\x2e")
+local _hxl3i5ni, plotResult = pcall(function()
+return teleportToPlayerPlot()
+end)
+if not _hxl3i5ni or not plotResult then
+_fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64")
+ActionText:Set("\x43\x6f\x75\x6c\x64\x20\x6e\x6f\x74\x20\x66\x69\x6e\x64\x20\x50\x6c\x61\x79\x65\x72\x20\x50\x6c\x6f\x74\x2e")
+_a3kmouxk = false
+break
+end
+if not _a3kmouxk then break end
+ActionText:Set("\x41\x74\x20\x50\x6c\x61\x79\x65\x72\x20\x50\x6c\x6f\x74\x2e\x2e\x2e")
+task.wait(_x7wv36ui)
+if not _a3kmouxk then break end
+ActionText:Set("\x55\x6e\x65\x71\x75\x69\x70\x70\x69\x6e\x67\x20\x74\x6f\x6f\x6c\x73\x2e\x2e\x2e")
+local _clra4dth = _oi4e6s3o.Character or _oi4e6s3o.CharacterAdded:Wait()
+local _67c3idvg = _clra4dth:FindFirstChildOfClass("\x48\x75\x6d\x61\x6e\x6f\x69\x64")
+if _67c3idvg then
+_67c3idvg:UnequipTools()
+end
+task.wait(_z3q8wgan)
+if not _a3kmouxk then break end
+local _jxsnsoi2 = getEnabledFloors()
+local _b0pooa5e = 0
+for _, floorNumber in ipairs(_jxsnsoi2) do
+if not _a3kmouxk then break end
+pcall(function() FloorStat:Set(floorNumber) end)
+for slotNumber = 1, 10 do
+if not _a3kmouxk then break end
+_b0pooa5e += 1
+pcall(function() RouteStat:Set(_b0pooa5e) end)
+ActionText:Set("\x46\x6c\x6f\x6f\x72\x20" .. floorNumber .. "\x20\x2022\x20\x53\x6c\x6f\x74\x20" .. slotNumber .. "\x2f\x31\x30")
+local _hcnqmki8, teleportResult = pcall(function()
+return teleportToCollectTouch(floorNumber, slotNumber)
+end)
+if not _hcnqmki8 or not teleportResult then
+_fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64")
+ActionText:Set("\x43\x6f\x75\x6c\x64\x20\x6e\x6f\x74\x20\x74\x65\x6c\x65\x70\x6f\x72\x74\x20\x74\x6f\x20\x46\x6c\x6f\x6f\x72\x20" .. floorNumber .. "\x20\x53\x6c\x6f\x74\x20" .. slotNumber)
+_a3kmouxk = false
+break
+end
+task.wait(_u9640t73)
+end
+end
+if not _a3kmouxk then break end
+ActionText:Set("\x52\x6f\x75\x74\x65\x20\x63\x6f\x6d\x70\x6c\x65\x74\x65\x2e\x20\x52\x65\x73\x74\x61\x72\x74\x69\x6e\x67\x2e\x2e\x2e")
+task.wait(_u9640t73)
+end
+_a3kmouxk = false
+_fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64")
+ActionText:Set("\x53\x74\x6f\x70\x70\x65\x64")
+pcall(function() TimeStat:Set(0) end)
+end)
+end,
+})
+_4o7fy6gk:CreateButton({
+name = "\x53\x54\x4f\x50",
+callback = function()
+if not _a3kmouxk then
+_smo7d3a1:Notify({ title = "\x49\x6e\x66\x6f", content = "\x41\x6c\x72\x65\x61\x64\x79\x20\x73\x74\x6f\x70\x70\x65\x64\x2e" })
+return
+end
+_a3kmouxk = false
+_fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64")
+ActionText:Set("\x54\x65\x6c\x65\x70\x6f\x72\x74\x20\x6c\x6f\x6f\x70\x20\x73\x74\x6f\x70\x70\x65\x64\x2e")
+pcall(function() TimeStat:Set(0) end)
+end,
+})
+_4o7fy6gk:CreateButton({
+name = "\x52\x45\x53\x45\x54\x20\x43\x4f\x55\x4e\x54\x45\x52",
+callback = function()
+_lr0y93a0 = 0
+pcall(function() CycleStat:Set(0) end)
+pcall(function() RouteStat:Set(0) end)
+if _a3kmouxk then
+_fgh2vjbx:Set("\x52\x75\x6e\x6e\x69\x6e\x67")
+ActionText:Set("\x43\x6f\x75\x6e\x74\x65\x72\x20\x72\x65\x73\x65\x74\x2e")
+else
+_fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64")
+ActionText:Set("\x57\x61\x69\x74\x69\x6e\x67\x20\x74\x6f\x20\x73\x74\x61\x72\x74\x2e\x2e\x2e")
+end
+end,
+})
+_nq2ta5dp:CreateSection({ name = "\x50\x6c\x61\x79\x65\x72\x20\x50\x6c\x6f\x74" })
+_nq2ta5dp:CreateButton({
+name = "\x42\x41\x53\x45",
+callback = function()
+if _a3kmouxk then return end
+local _36t1iy3p, result = pcall(function() return teleportToPlayerPlot() end)
+if not _36t1iy3p or not result then
+_fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64")
+ActionText:Set("\x43\x6f\x75\x6c\x64\x20\x6e\x6f\x74\x20\x66\x69\x6e\x64\x20\x50\x6c\x61\x79\x65\x72\x20\x50\x6c\x6f\x74\x2e")
+return
+end
+_fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64")
+ActionText:Set("\x4d\x61\x6e\x75\x61\x6c\x6c\x79\x20\x74\x65\x6c\x65\x70\x6f\x72\x74\x65\x64\x20\x74\x6f\x20\x50\x6c\x61\x79\x65\x72\x20\x50\x6c\x6f\x74\x2e")
+end,
+})
+_nq2ta5dp:CreateSection({ name = "\x52\x61\x72\x69\x74\x79\x20\x54\x65\x6c\x65\x70\x6f\x72\x74\x73" })
+_nq2ta5dp:CreateButton({
+name = "\x55\x4e\x43\x4f\x4d\x4d\x4f\x4e",
+callback = function()
+if _a3kmouxk then return end
+teleport(_uf2ya7dx)
+_fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64")
+ActionText:Set("\x54\x65\x6c\x65\x70\x6f\x72\x74\x65\x64\x20\x74\x6f\x20\x55\x6e\x63\x6f\x6d\x6d\x6f\x6e\x2e")
+end,
+})
+_nq2ta5dp:CreateButton({
+name = "\x52\x41\x52\x45",
+callback = function()
+if _a3kmouxk then return end
+teleport(_xy8fdhb7)
+_fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64")
+ActionText:Set("\x54\x65\x6c\x65\x70\x6f\x72\x74\x65\x64\x20\x74\x6f\x20\x52\x61\x72\x65\x2e")
+end,
+})
+_nq2ta5dp:CreateButton({
+name = "\x45\x50\x49\x43",
+callback = function()
+if _a3kmouxk then return end
+teleport(_qvlwwc8t)
+_fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64")
+ActionText:Set("\x54\x65\x6c\x65\x70\x6f\x72\x74\x65\x64\x20\x74\x6f\x20\x45\x70\x69\x63\x2e")
+end,
+})
+_nq2ta5dp:CreateButton({
+name = "\x4c\x45\x47\x45\x4e\x44\x41\x52\x59",
+callback = function()
+if _a3kmouxk then return end
+teleport(_ada6n766)
+_fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64")
+ActionText:Set("\x54\x65\x6c\x65\x70\x6f\x72\x74\x65\x64\x20\x74\x6f\x20\x4c\x65\x67\x65\x6e\x64\x61\x72\x79\x2e")
+end,
+})
+_nq2ta5dp:CreateButton({
+name = "\x4d\x59\x54\x48\x49\x43\x41\x4c",
+callback = function()
+if _a3kmouxk then return end
+teleport(_1tvah9di)
+_fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64")
+ActionText:Set("\x54\x65\x6c\x65\x70\x6f\x72\x74\x65\x64\x20\x74\x6f\x20\x4d\x79\x74\x68\x69\x63\x61\x6c\x2e")
+end,
+})
+_nq2ta5dp:CreateButton({
+name = "\x53\x45\x43\x52\x45\x54",
+callback = function()
+if _a3kmouxk then return end
+teleport(_0ye6xdbs)
+_fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64")
+ActionText:Set("\x54\x65\x6c\x65\x70\x6f\x72\x74\x65\x64\x20\x74\x6f\x20\x53\x65\x63\x72\x65\x74\x2e")
+end,
+})
+_nq2ta5dp:CreateButton({
+name = "\x43\x45\x4c\x45\x53\x54\x49\x41\x4c",
+callback = function()
+if _a3kmouxk then return end
+teleport(_6iv6qnae)
+_fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64")
+ActionText:Set("\x54\x65\x6c\x65\x70\x6f\x72\x74\x65\x64\x20\x74\x6f\x20\x43\x65\x6c\x65\x73\x74\x69\x61\x6c\x2e")
+end,
+})
+_nq2ta5dp:CreateButton({
+name = "\x43\x4f\x53\x4d\x49\x43",
+callback = function()
+if _a3kmouxk then return end
+teleport(_s21mljtf)
+_fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64")
+ActionText:Set("\x54\x65\x6c\x65\x70\x6f\x72\x74\x65\x64\x20\x74\x6f\x20\x43\x6f\x73\x6d\x69\x63\x2e")
+end,
+})
+_nq2ta5dp:CreateButton({
+name = "\x47\x4f\x44",
+callback = function()
+if _a3kmouxk then return end
+teleport(_q7lfqu8t)
+_fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64")
+ActionText:Set("\x54\x65\x6c\x65\x70\x6f\x72\x74\x65\x64\x20\x74\x6f\x20\x47\x6f\x64\x2e")
+end,
+})
+_ul0515bt:CreateSection({ name = "\x49\x6e\x66\x6f" })
+_ul0515bt:CreateText({
+name = "\x41\x62\x6f\x75\x74",
+text = "\x58\x59\x55\x52\x45\x49\x20\x58\x2d\x46\x4c\x4f\x49\x44\x20\x2d\x20\x41\x75\x74\x6f\x20\x43\x6f\x73\x6d\x69\x63\x20\x46\x61\x72\x6d\x20\x2b\x20\x54\x65\x6c\x65\x70\x6f\x72\x74\x73",
+})
+_ul0515bt:CreateText({
+name = "\x54\x69\x70",
+text = "\x55\x73\x65\x20\x46\x6c\x6f\x6f\x72\x20\x32\x2f\x33\x20\x74\x6f\x67\x67\x6c\x65\x20\x74\x6f\x20\x65\x6e\x61\x62\x6c\x65\x20\x6d\x6f\x72\x65\x20\x73\x6c\x6f\x74\x73\x20\x70\x65\x72\x20\x63\x79\x63\x6c\x65",
+})
+_ul0515bt:CreateSection({ name = "\x53\x6f\x63\x69\x61\x6c" })
+_ul0515bt:CreateButton({
+name = "\x58\x59\x55\x52\x45\x49\x20\x54\x45\x41\x4d",
+callback = function()
+local _tf89hfb3 = "\x68\x74\x74\x70\x73\x3a\x2f\x2f\x77\x68\x61\x74\x73\x61\x70\x70\x2e\x63\x6f\x6d\x2f\x63\x68\x61\x6e\x6e\x65\x6c\x2f\x30\x30\x32\x39\x56\x62\x38\x50\x4d\x54\x67\x30\x30\x32\x54\x39\x59\x34\x65\x49\x75\x74\x32\x45"
+local _x2hums0c = false
+if typeof(setclipboard) == "\x66\x75\x6e\x63\x74\x69\x6f\x6e" then
+_x2hums0c = pcall(function() setclipboard(_tf89hfb3) end)
+end
+if not _x2hums0c and typeof(toclipboard) == "\x66\x75\x6e\x63\x74\x69\x6f\x6e" then
+_x2hums0c = pcall(function() toclipboard(_tf89hfb3) end)
+end
+if _x2hums0c then
+_smo7d3a1:Notify({ title = "\x58\x59\x55\x52\x45\x49\x20\x54\x45\x41\x4d", content = "\x4c\x69\x6e\x6b\x20\x63\x6f\x70\x69\x65\x64\x21" })
+else
+_smo7d3a1:Notify({ title = "\x58\x59\x55\x52\x45\x49\x20\x54\x45\x41\x4d", content = "\x46\x61\x69\x6c\x65\x64\x2e\x20\x4c\x69\x6e\x6b\x3a\x20" .. _tf89hfb3 })
+end
+end,
+})
+_fgh2vjbx:Set("\x53\x74\x6f\x70\x70\x65\x64")
+ActionText:Set("\x57\x61\x69\x74\x69\x6e\x67\x20\x74\x6f\x20\x73\x74\x61\x72\x74\x2e\x2e\x2e")
+_smo7d3a1:Notify({
+title = "\x58\x59\x55\x52\x45\x49\x20\x58\x2d\x46\x4c\x4f\x49\x44",
+content = "\x41\x75\x74\x6f\x20\x43\x6f\x73\x6d\x69\x63\x20\x46\x61\x72\x6d\x20\x6c\x6f\x61\x64\x65\x64\x20\x28\x47\x65\x6e\x32\x29",
+})
+print("\x5b\x58\x59\x55\x52\x45\x49\x20\x58\x2d\x46\x4c\x4f\x49\x44\x5d\x20\x76\x30\x69\x64\x68\x75\x62\x20\x6c\x6f\x61\x64\x65\x64\x20\x28\x52\x61\x79\x66\x69\x65\x6c\x64\x20\x47\x65\x6e\x32\x20\x55\x49\x29")
